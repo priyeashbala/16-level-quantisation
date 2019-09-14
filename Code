@@ -1,3 +1,4 @@
+%pri_bala
 clc
 clear all
 [y,Fs]=audioread('DCS 1 min.m4a'); 
