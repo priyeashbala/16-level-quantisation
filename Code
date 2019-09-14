@@ -1,0 +1,33 @@
+clc
+clear all
+[y,Fs]=audioread('DCS 1 min.m4a'); 
+
+
+l=length(y);  %to find the length of the original audio 
+figure(1);
+plot(y)    %plotting the original audio signal
+m1=max(y);  %finding the maximum amplitude
+m2=min(y);  %finding the minimum amplitude
+range=m1-m2; %range as the difference between maximum and minimum amplitude
+q=range/16;  %step size wrt to the range and level of quantisation
+k=1;
+for i = m2:q:m1
+    partition(k)=i*q;
+    k=k+1;
+end
+for i=1:1:l
+    if(y(i)<partition(1))
+            z(i)=partition(1);
+    end
+    for j= 1:1:15
+        if (partition(j)<=y(i) && y(i)<partition(j+1))
+            z(i)=partition(j);
+        end
+    end
+    if(y(i)>=partition(17))
+        z(i)=partition(17);
+    end
+end
+figure(2);
+plot(z) %plotting the quantised audio wave
+sound(z,Fs) %for playing the quantised audio
